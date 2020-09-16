@@ -1,0 +1,40 @@
+/*给定一个n*n的矩阵，求该矩阵的k次幂，即P^k。*/
+#include<stdio.h>
+#include<stdlib.h>
+int main(){
+	int n,k;
+	scanf("%d %d",&n,&k);
+	int *a;//a is input array
+	a=(int *)malloc(sizeof(int)*n*n);
+	for(int i=0;i<n;i++)
+		for(int  j=0;j<n;j++)
+			scanf("%d",&a[i*n+j]);
+	int max;
+	int *b;//b is temporary array
+	b=(int *)malloc(sizeof(int)*n*n);
+	int *c;//c is sum array
+	c=(int *)malloc(sizeof(int)*n*n);
+	for(int i=0;i<n;i++)
+		for(int  j=0;j<n;j++)
+			c[i*n+j]=a[i*n+j];
+	for(int t=0;t<k-1;t++){  //calculate the power
+		for(int i=0;i<n;i++) //calculate the array
+			for(int j=0;j<n;j++){
+				max=0;
+				for(int k=0;k<n;k++)
+					max+=c[i*n+k]*a[j+k*n];
+				b[i*n+j]=max;		
+			}
+		for(int i=0;i<n;i++)
+			for(int  j=0;j<n;j++)
+				c[i*n+j]=b[i*n+j];
+	}
+	for(int i=0;i<n;i++)
+		for(int  j=0;j<n;j++)
+			if(j!=n-1)
+				printf("%d ",c[i*n+j]);		
+			else
+				printf("%d\n",c[i*n+j]);
+	system("pause");
+	return 0;
+}

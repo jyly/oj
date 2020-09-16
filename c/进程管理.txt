@@ -1,0 +1,128 @@
+/*在操作系统中，进程管理是非常重要的工作，每个进程都有唯一的进程标识（PID）。每个进程都可以启动子进程，此时我们称它为其子进程的父进程，除了PID为0的进程之外，每个进程有且只有一个父进程，在这个任务中，你需要实时维护操作系统运行中的三个基本操作：
+1.FORK PID1 PID2：标识为PID1的进程启动了一个标识为PID2的子进程。
+2.KILL PID：结束标识为PID的进程。请注意，与此同时所有PID的子进程也将同时结束。如果PID是不存在或已经结束的进程，则不做任何操作。
+3.QUERY PID：查询标识为PID的进程是否仍然存在。
+在初始状态下，系统只开启了PID为0的进程，并且在任何情况下该进程不会结束。
+输出格式
+5
+FORK 0 1
+QUERY 1
+KILL 1
+QUERY 1
+QUERY 2
+输出样例
+Yes
+No
+No
+Yes*/
+#include<stdio.h>
+#include<stdlib.h>
+#include<vector>
+struct node {
+	bool turn;
+	std::vector<int> num;
+};
+node p[100];
+void del (int m) {
+	std::vector<int> c = p[m].num;
+	for (auto &i : c)
+		del(i);
+	p[m].num.clear();
+	p[m].turn = false;
+}
+
+int main() {
+	int n;
+	scanf("%d", & n);
+	p[0].turn = 0;
+	for (int i = 0; i < n; i++) {
+		char b[6];
+		scanf("%s", b);
+		if (b[0] == 'F') {
+			int m, n;
+			scanf("%d %d", &m, &n);
+			p[n].turn = true;
+			p[m].num.push_back(n);
+		}
+		if (b[0] == 'Q') {
+			int m;
+			scanf("%d", &m);
+			if (p[m].turn == true)
+				printf("YES\n");
+			else
+				printf("NO\n");
+		}
+		if (b[0] == 'K') {
+			int m;
+			scanf("%d", &m);
+			del(m);
+		}
+	}
+	system("pause");
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//数组法
+// char a[100][100] = {'0'};
+// void del(char a[100][100], int n) {
+// 	for (int i = 0; i < 100; i++)
+// 		if (a[n][i] == '1') {
+// 			del(a, i);
+// 			a[n][i] = 0;
+// 		}
+// 	for (int i = 0; i < n; i++)
+// 		if (a[i][n] == '1') {
+// 			a[i][n] = 0;
+// 		}
+// }
+// int main() {
+// 	int  n;
+// 	scanf("%d", &n);
+// 	a[0][0] = 1;
+// 	for (int i = 0; i < n; i++) {
+// 		char b[6];
+// 		scanf("%s", b);
+// 		if (b[0] == 'F') {
+// 			int m, n;
+// 			scanf("%d %d", &m, &n);
+// 			a[m][n] = '1';
+// 		}
+// 		if (b[0] == 'Q') {
+// 			int flag = 0;
+// 			int m;
+// 			scanf("%d", &m);
+// 			for (int j = 0; j < 100; j++)
+// 				if (a[j][m] == '1')
+// 					flag = 1;
+// 			if (flag == 1)
+// 				printf("YES\n");
+// 			else
+// 				printf("NO\n");
+// 		}
+// 		if (b[0] == 'K') {
+// 			int m;
+// 			scanf("%d", &m);
+// 			del(a, m);
+// 		}
+// 	}
+// 	system("pause");
+// 	return 0;
+// }

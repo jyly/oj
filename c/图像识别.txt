@@ -1,0 +1,78 @@
+/*穷举也要按照基本法*/
+/*在图像识别中，我们经常需要分析特定图像中的一些特征，而其中很重要的一点就是识别出图像的多个区域。在这个问题中，我们将给定一幅N x M的图像，其中每个1 x 1的点都用一个[0,255]的值来表示他的RGB颜色。如果两个相邻的像素点颜色差不超过D，我们就认为这两个像素点属于同一个区域。对于一个像素点(x,y) ，以下这8个点（如果存在）是与它相邻的：（x-1, y-1），（x-1,y），（x-1,y+1），（x,y-1），（x,y+1），（x+1,y-1），（x+1,y），（x+1,y+1）。
+你的任务是写一个程序，分辨出给定图像中一共被分为多少个区域。
+输入格式
+输入数据包含多组测试数据。
+输入的第一行是一个整数T（T<=100），表示测试数据的组数。
+每组测试数据的第一行是三个整数N,M,D（1<=N,M<=100, 0<=D<=255），意义如上所述。
+接下来N行，每行M个整数，表示给定图像的每个像素点颜色。
+输出格式
+对于每组测试数据输出一行，即图像中的区域数量。
+输入样例
+2
+3 3 0
+1 1 1
+0 1 0
+0 1 0
+3 4 1
+10 11 12 13
+9 8 7 6
+2 3 4 5
+输出样例
+3
+1*/
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+void find(int *a, int *b, int d, int i, int j, int w, int l, int n) {
+	if (b[i * l + j] == 0)
+		b[i * l + j] = n;
+	if ((j + 1) < l  && b[i * l + j + 1] == 0 && !(abs( a[i * l + j] - a[i * l + j + 1]) > d) ) {
+
+		find(a, b, d, i, j + 1, w, l, n);
+	}
+	if ((i + 1) < w && b[(i + 1) * l + j] == 0 && !(abs(a[(i + 1) * l + j] - a[i * l + j ]  ) > d)) {
+		find(a, b, d, i + 1, j , w, l, n);
+	}
+	if (!((j - 1) < 0)  && b[i * l + j - 1] == 0 && !(abs( a[i * l + j] - a[i * l + j - 1]) > d) ) {
+
+		find(a, b, d, i, j - 1, w, l, n);
+	}
+	if (!((i - 1) < 0) && b[(i - 1) * l + j] == 0 && !(abs(a[(i - 1) * l + j] - a[i * l + j ]  ) > d)) {
+		find(a, b, d, i - 1, j , w, l, n);
+	}
+
+}
+int main() {
+	int n;
+	scanf("%d", &n);
+	for (int e; e < n; e++) {
+		int a, b, c;
+		scanf("%d %d %d", &a, &b, &c);
+		int *p;
+		p = new int [a * b];
+		for (int i = 0; i < a; i++) {
+			for (int j = 0; j < b; j++)
+				scanf("%d", &p[i * b + j]);
+		}
+		int *q;
+		q = new int [a * b];
+		for (int i = 0; i < a; i++) {
+			for (int j = 0; j < b; j++)
+				q[i * b + j] = 0;
+		}
+		int n = 0;
+		for (int i = 0; i < a; i++) {
+			for (int j = 0; j < b; j++) {
+
+				if (q[i * b + j] == 0) {
+					n++;
+					find(p, q, c, i, j, a, b, n);
+				}
+			}
+		}
+		printf("%d\n", n );
+	}
+	system("pause");
+	return 0;
+}

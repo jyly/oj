@@ -1,0 +1,36 @@
+/*给出一个序列，判断该序列是不是某二叉搜索树
+的中序遍历序列，如果是输出"Yes"，否则输出"No"。
+一颗带权二叉树是一颗二叉搜索树（二叉排序树），当
+且仅当对于任意一个节点，他的左子树中的所有权值小
+于当前节点的权值，且它的右子树中的所有权值均大于
+当前节点的权值。*/
+#include<stdio.h>
+#include<stdlib.h>
+int main() {
+	int n;
+	scanf("%d", &n);
+	for (int  i = 0; i < n; i++) {
+		int m;
+		scanf("%d", &m);
+		int a, b, flag = 0;
+		for (int j = 0; j < m; j++) {
+			if (j == 0)
+				scanf("%d", &a);
+			else {
+				scanf("%d", &b);
+				if (b > a)
+					a = b;
+				else {
+					flag = 1;
+					break;
+				}
+			}
+		}
+		if (flag == 0)
+			printf("YES\n");
+		else
+			printf("NO\n");
+	}
+	system("pause");
+	return 0;
+}

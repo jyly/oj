@@ -1,0 +1,62 @@
+/*查找一个数组的第K小的数，注意同样大小算一样大。 如  2 1 3 4 5 2 第三小数为3。*/
+#include<stdio.h>
+#include<stdlib.h>
+#include<algorithm>
+
+int main(){
+	int a;
+	scanf("%d",&a);
+	int *b;
+	b=(int *)malloc(sizeof(int)*a);
+	for(int i=0;i<a;i++){
+		scanf("%d",&b[i]);
+	}
+	int t;
+	scanf("%d",&t);
+	int max=0;
+	int *min;
+	min=(int *)malloc(sizeof(int)*t);
+	for(int i=0;i<a;i++)
+		if(b[max]<b[i])
+			max=i;
+	for(int i=0;i<t;i++){
+		min[i]=max;
+		for(int j=0;j<a;j++)
+			if(0==i){
+				if(b[j]<b[min[i]]){
+					min[i]=j;
+				}
+			}else{
+				if(b[j]<b[min[i]]&&b[j]>b[min[i-1]]){
+					min[i]=j;
+			}	
+		}
+	}	
+
+	printf("%d\n",b[min[t-1]]);
+	free(b);
+	free(min);
+	system("pause");
+	return 0;
+}
+
+// void find(int *b,int i,int j,int t){
+// 	int c;
+// 	int n=i,m=j;
+// 	while(n<m){
+// 		c=b[n];
+// 		while(n<m&&b[n]<b[m])m--;
+// 		b[n]=b[m];
+// 		while(n<m&&b[n]<b[m])n++;
+// 		b[m]=b[n];
+// 		b[n]=c;
+// 		if(n>t){
+// 			find(b,0,n,t);
+// 		}
+// 		if(n<t){
+// 			find(b,n,j,t);
+// 		}
+// 		if(n==t)
+// 			break;
+// 	}
+// }

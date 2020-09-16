@@ -1,0 +1,52 @@
+/* 一个复数（x+iy）集合，两种操作作用在该集合上：     
+1、Pop 表示读出集合中复数模值最大的那个复数，如集合为空 输出  empty  
+，不为空就输出最大的那个复数并且从集合中删除那个复数，再输出集合的大小SIZE；
+2 Insert a+ib  指令（a，b表示实部和虚部），将a+ib加入到集合中 ，输出集合的大小SIZE；
+最开始要读入一个int n，表示接下来的n行每一行都是一条命令。*/
+#include<stdio.h>
+#include<stdlib.h>
+#include<vector>
+
+struct vn{
+	int a,b;
+	int mo;
+};
+int main(){
+	int a;
+	scanf("%d",&a);
+	std::vector<vn> b;	//b是集合
+	for(int i=0;i<a;i++){
+		char c[7];	//c是命令	
+		scanf("%s",c);
+		if(c[0]=='P'){
+			if(b.empty())
+				printf("empty\n");
+			else{
+				int max=0,size=b.size();				
+				for(int j=1;j<size;j++){
+					if(b[j].mo>b[max].mo)
+						max=j;
+					else{
+						if(b[j].mo==b[max].mo)
+							if(b[j].b<b[max].b)
+								max=j;
+						}						
+				}
+				printf("%d+i%d\n",b[max].a,b[max].b);
+				b.erase(b.begin()+max);
+				size=b.size();
+				printf("SIZE = %d\n",size);
+			}
+		}else{
+			int n,m;
+			scanf("%d+i%d",&n,&m);
+			vn d;  //元素个体
+			d.a=n,d.b=m,d.mo=n*n+m*m;
+			b.push_back(d);
+			int size=b.size();
+			printf("SIZE = %d\n",size);
+		}
+	}
+	system("pause");
+	return 0;
+}

@@ -1,0 +1,62 @@
+/*二叉排序树，也称二叉查找树。可以是一棵空树，也可以是一棵具有如下特性的非空二叉树：
+1.若左子树非空，则左子树上所有节点关键字值均不大于根结点的关键字值；
+    2. 若右子树非空，则右子树上所有节点关键字值均不小于根结点的关键字值；
+    3. 左、右子树本身也是一棵二叉排序树。
+现在给你N个关键字值各不相同的节点，要求你按顺序插入一个初始为空的二叉树中，每次插入成功后，求相应的父节点的关键字值，如果没有父节点，则输出-1。*/
+#include<stdio.h>
+#include<stdlib.h>
+struct node {
+	int num;
+	struct node *lc;
+	struct node *rc;
+};
+int main() {
+	int  n;
+	scanf("%d", &n);
+	node *q;
+	q = (node *)malloc(sizeof(node));
+	scanf("%d", &q->num);
+	printf("-1\n");
+	q->lc = (node *)malloc(sizeof(node));
+	q->rc = (node *)malloc(sizeof(node));
+	q->lc->num = 0;
+	q->rc->num = 0;
+	for (int i = 0; i < n - 1; i++) {
+		int t;
+		scanf("%d", &t);
+		node *p;
+		p = q;
+		while (p->num != t) {
+			if (t > p->num) {
+				if (p->rc ->num != 0) {
+					p = p->rc;
+				}
+				else {
+					printf("%d\n", p->num);
+					p = p->rc;
+					p->num = t;
+					p->lc = (node *)malloc(sizeof(node));
+					p->rc = (node *)malloc(sizeof(node));
+					p->lc->num = 0;
+					p->rc->num = 0;
+				}
+			}
+			else {
+				if (p->lc ->num != 0) {
+					p = p->lc;
+				}
+				else {
+					printf("%d\n", p->num);
+					p = p->lc;
+					p->num = t;
+					p->lc = (node *)malloc(sizeof(node));
+					p->rc = (node *)malloc(sizeof(node));
+					p->lc->num = 0;
+					p->rc->num = 0;
+				}
+			}
+		}
+	}
+	system("pause");
+	return 0;
+}

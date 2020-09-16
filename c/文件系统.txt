@@ -1,0 +1,158 @@
+/*现在很多操作系统的文件系统都是基于树形结构设计的。即一个目录下可以有若干个目录和文件，而每个目录和文件都可以通过一条从根目录出发的唯一路径来唯一确定。我们希望你实现对这样的一个文件系统的简单管理。
+为了简化问题，我们做出如下假设：
+    1. 假设文件系统初始时只有一个根目录root。
+    2. 假设所有出现的文件和目录的名字都是唯一的。即，不会有两个相同名字的文件出现，不会有两个相同名字的目录出现，也不会有一个文件和一个目录名字相同。
+    3. 文件名字和目录名字都是长度在1到20之间的字符串（包括1和20），且只由英文大写字母、英文小写字母、数字组成。大小写字母之间不等效。
+你需要实现如下操作：
+    1. CREATEFILE FILENAME DIRNAME
+这个操作的含义是：在DIRNAME的目录下创建一个名字为FILENAME的文件。我们保证当出现这个操作时，DIRNAME是一个已经存在的目录，而FILENAME这个名字是首次出现。
+    2. CREATEDIR DIRNAME1 DIRNAME2 这个操作的含义是：在DIRNAME2的目录下创建一个名字为DIRNAME1的目录。我们保证当出现这个操作时，DIRNAME2是一个已经存在的目录，而DIRNAME1这个名字是首次出现。
+    3. LISTFILE DIRNAME 这个操作的含义是：按照创建的先后顺序打印出DIRNAME目录下的所有文件名字。我们保证当出现这个操作时，DIRNAME是一个已经存在的目录.
+    4. LISTDIR DIRNAME 这个操作的含义是：按照创建的先后顺序打印出DIRNAME目录下的所有目录名字。我们保证当出现这个操作时，DIRNAME是一个已经存在的目录
+InputFormat
+第一行有一个整数T，表示一共有T组数据需要你处理。请注意各组数据之间是相互独立的。每当处理新的一组数据时，你都应当假设此时只有一个名字为root的根目录存在。T的大小不超过20。
+对于每组数据，第一行有一个整数N(0<N<=100)，表示有N个操作需要你处理，接下来的N行，每一个行描述了一个操作。
+OutputFormat
+对于每个LISTFILE操作和LISTDIR操作，如果找到了X个文件（或目录），你需要输出X行，按照创建时间从早到晚的顺序，每一行打印一个文件（或目录）的名字。如果找到了0个文件（或目录），就不要输出任何东西。请注意不要输出多余的空格和换行符。*/
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<vector>
+#include<string.h>
+struct files {
+	char name[22];
+};
+struct dirs {
+	char name[22];
+	std::vector<files *> nf;
+	std::vector<dirs *> nd;
+};
+
+dirs* finddir(dirs *p, char na[22]) {
+	if (!strcmp(p->name, na))
+		return p;
+	else {
+		int n = p->nd.size();
+		for (int z = 0; z < n; z++) {
+			dirs *a;
+			a = finddir(p->nd[z], na);
+			if (!strcmp(a->name, na))
+				return a;
+		}
+	}
+	return NULL;
+}
+int main() {
+	int n;
+	scanf("%d", &n);
+	dirs *p;
+	p = (dirs *)malloc(sizeof(dirs));
+	strcpy(p->name, "root");
+	for (int z = 0; z < n; z++) {
+		int m;
+		scanf("%d", &m);
+		for (int x = 0; x < m; x++) {
+			// printf("%d\n", x);
+			char ord[100];
+			for (int i = 0; i < 100; i++) {
+				scanf("%c", & ord[i]);
+				if (ord[i] == '\n')
+					break;
+			}
+			// printf("%s\n", ord );
+			if (!strncmp(ord, "CREATEFILE", 10) ) {
+				// char newf[22], sourf[22];
+				// scanf("%s %s", newf, sourf);
+				// printf("%s %s\n", newf , sourf);
+				char newf[22], sourf[22];
+				int i;
+				for ( i = 0; i < 22; i++) {
+					newf[i] = ord[i + 11];
+					if (newf[i] == ' ')
+						break;
+				}
+				newf[i] = '\0';
+				int j = i + 12;
+				for ( i = 0; i < 22; i++, j++) {
+					sourf[i] = ord[j];
+					if (sourf[i] == '\n')
+						break;
+				}
+				sourf[i] = '\0';
+				// printf("%s %s\n", newf, sourf );
+				dirs *a;
+				a = finddir(p, sourf);
+				// printf("%s\n", a->name );
+				files *b;
+				b = (files *)malloc(sizeof(files));
+				strcpy(b->name, newf);
+				// printf("%s\n", b->name );
+				a->nf.push_back(b);
+				// continue;
+			}
+			if (!strncmp(ord, "CREATEDIR", 9)) {
+				char newf[22], sourf[22];
+				int i;
+				for ( i = 0; i < 22; i++) {
+					newf[i] = ord[i + 10];
+					if (newf[i] == ' ')
+						break;
+				}
+				newf[i] = '\0';
+				int j = i + 11;
+				for ( i = 0; i < 22; i++, j++) {
+					sourf[i] = ord[j];
+					if (sourf[i] == '\n')
+						break;
+				}
+				sourf[i] = '\0';
+				// printf("%s %s\n", newf, sourf );
+				dirs *a;
+				a = finddir(p, sourf);
+				dirs *b;
+				b = (dirs *)malloc(sizeof(dirs));
+				strcpy(b->name, newf);
+				a->nd.push_back(b);
+				// continue;
+			}
+			if (!strncmp(ord, "LISTFILE", 8)) {
+				char sourf[22];
+				int i;
+				for (i = 0; i < 22; i++) {
+					sourf[i] = ord[i + 9];
+					if (sourf[i] == '\n')
+						break;
+				}
+				sourf[i] = '\0';
+				// printf("%s\n", sourf );
+				dirs *a;
+				a = finddir(p, sourf);
+				int n = a->nf.size();
+				for (int i = 0; i < n; i++) {
+					printf("%s\n", a->nf[i]->name );
+				}
+				// continue;
+			}
+			if (!strncmp(ord, "LISTDIR", 7)) {
+				char sourf[22];
+				int i;
+				for (i = 0; i < 22; i++) {
+					sourf[i] = ord[i + 8];
+					if (sourf[i] == '\n')
+						break;
+				}
+				sourf[i] = '\0';
+				// printf("%s\n", sourf );
+				dirs *a;
+				a = finddir(p, sourf);
+				int n = a->nd.size();
+				for (int i = 0; i < n; i++) {
+					printf("%s\n", a->nd[i]->name );
+				}
+				// continue;
+			}
+		}
+	}
+	system("pause");
+	return 0;
+}

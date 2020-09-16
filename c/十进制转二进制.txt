@@ -1,0 +1,17 @@
+#include<stdio.h>
+#include<stdlib.h>
+int main(){
+	int a;
+	scanf("%d",&a);
+	char b[33];
+	int m=0,n=a;
+	for(;n!=1;m++){
+		b[m]=n%2;
+		n=n/2;
+	}
+	b[m]=1;
+	for(;m>-1;m--)
+		printf("%d",b[m]);
+	system("pause");
+	return 0;
+}

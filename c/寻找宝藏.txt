@@ -1,0 +1,33 @@
+/*一棵多叉树T，根结点为0，某个结点上有宝藏。从根结点沿着树枝
+向下寻找，如果有分支，沿各分支继续寻找是等概率的。计算找到宝藏的概率。*/
+#include<stdlib.h>
+#include<stdio.h>
+int fi(int *map, int *node, int k, int j) {
+	for (int n = 0; n < j; n++) {
+		if (map[n + j] == k ) {
+			if (map[n] != 0)
+				return node[map[n]] * fi(map, node, map[n], j);
+			else
+				return node[map[n]];
+		}
+	}
+	return 0;
+}
+int main() {
+	int i, j, k; //node,side,end
+	scanf("%d %d %d", &i, &j, &k);
+	int *map;
+	map = (int *)malloc(sizeof(int) * j * 2);
+	int *node;
+	node = (int *)malloc(sizeof(int) + i);
+	for (int n = 0; n < j; n++) {
+		scanf("%d %d", &map[n], &map[n + j]);
+		node[map[n]]++;
+	}
+	double sum;
+	sum = fi(map, node, k, j);
+	// sum=1/sum
+	printf("%.6f", 1 / sum );
+	system("pause");
+	return 0;
+}

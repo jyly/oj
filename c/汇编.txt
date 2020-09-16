@@ -1,0 +1,146 @@
+/*汇编语言描述了机器最终所要执行的指令序列，其中，以8086CPU为中央处理器的汇编就是最经典的版本之一。这个题目需要你的程序处理一些简单的汇编指令，并返回执行之后各寄存器的结果。
+在该CPU中，所有寄存器都是16位，可以存放两个字节（即0到65535之间）。为简单起见，我们只是用其中AX，BX，CX，DX四个通用寄存器。其中，每个寄存器又可分为两个独立使用的8位寄存器：
+AX可分为AH和AL
+BX可分为BH和BL
+CX可分为CH和CL
+DX可分为DH和DL
+在存储数据时，低8位构成了L型寄存器（AL，BL，CL，DL），高8位构成了H型寄存器（AH，BH，CH，DH）。例如，当AX=（20000）10 =（0100 1110 0010 0000）2时，我们有
+AX					  AH			AL
+0100 1110 0010 0000B   0100 1110B		0010 0000B
+在汇编中，数值通常表示为2进制（以B结尾），16进制（以H结尾）或者10进制（没有后缀字符）。如上例出现的20000（10进制）可以表示为0100111000100000B，也可表示为04E20H。为了避免指令的歧义，16进制下的首位一定是0。
+本题中所涉及的操作指令有以下两类：
+MOV：数据转移
+ADD：加法
+指令的用法如下：
+汇编指令          控制CPU完成的操作       		用高级语言的语法描述
+MOV AX，18		  将18送入寄存器AX        	AX=18
+MOV AH，11B     将11B送入寄存器AH      		AH=11B
+MOV AX，BX	  将寄存器BX中的数据送入AX   AX=BX
+ADD AX，08H     将寄存器AX中的数值加上08H  AX=AX+08H
+ADD AX，BX      将AX和BX中的数值相加，    AX=AX+BX
+                  结果存在AX中
+注意在MOV和ADD操作中，指令的两个操作对象的位数应当是一致的，即不会出现如MOV AX，BL或ADD AL，100H这样错误的指令。
+在初始状态下，四个通用寄存器中的数值均为0.给定一系列的汇编指令，请输出执行完所有指令后四个通用寄存器中的数值。
+输入格式
+输入的第一行是一个整数T（T<=50），表示输入的数据组数。
+每组测试数据的第一行是一个整数N（1<=N<=100），表示指令的数量。
+接下来N行，每行包括一个指令。指令中只会存在一个空格，出现在指令名和操作对象中间。数据保证不会出现错误的语句，每条语句结束之后该寄存器内的数值都不会超过它本身所能存储的最大值。
+输出格式
+对于每组测试数据，输出一行表示AX，BX，CX，DX最终的值（用十进制表示），数值中间用一个空格隔开。注意行末不要输出多余的空格。
+样例输入
+2
+3
+MOV AX，2
+MOV BX，3
+ADD AX，BX
+5
+MOV AX，2
+MOV BX，030H
+MOV CX，11B
+ADD AX，CX
+ADD DL，CL
+样例输出
+5 3 0 0
+5 48 3 3*/
+
+/*注意： 中文逗号占3个字符位？？？*/
+#include<stdlib.h>
+#include<stdio.h>
+#include<vector>
+#include<algorithm>
+#include<math.h>
+void set(int *num, int count, char a) {
+	if (a == 'A') {
+		num[0] += count;
+	}
+	if (a == 'B') {
+		num[1] += count;
+	}
+	if (a == 'C') {
+		num[2] += count;
+	}
+	if (a == 'D') {
+		num[3] += count;
+	}
+}
+void adds(int *num, char a, char b) {
+	int i, j;
+	if (a == 'A') {
+		i = 0;
+	}
+	if (a == 'B') {
+		i = 1;
+	}
+	if (a == 'C') {
+		i = 2;
+	}
+	if (a == 'D') {
+		i = 3;
+	}
+	if (b == 'A') {
+		j = 0;
+	}
+	if (b == 'B') {
+		j = 1;
+	}
+	if (b == 'C') {
+		j = 2;
+	}
+	if (b == 'D') {
+		j = 3;
+	}
+	num[i] += num[j];
+}
+int main() {
+	int n;
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++) {
+		int num[4] = {0};
+		int m;
+		scanf("%d\n", &m);
+		for (int j = 0; j < m; j++) {
+			char a[100];
+			int k;
+			for (k = 0; k < 100; k++) {
+				scanf("%c", &a[k]);
+				if (a[k] == '\n')
+					break;
+			}
+			if (a[0] == 'M') {
+				int count = 0;
+				if (a[k - 1] == 'H') {
+					for (int z = 0; z < k ; z++) {
+						if (a[k - 5 - z] == 'X')
+							break;
+						count += int(a[k - 2 - z] - '0') * pow(16, z);
+					}
+					set(num, count, a[4]);
+				} else {
+					if (a[k - 1] == 'B') {
+						for (int z = 0; z < k ; z++) {
+							if (a[k - 5 - z] == 'X')
+								break;
+							count += int(a[k - 2 - z] - '0') * pow(2, z);
+						}
+						set(num, count, a[4]);
+					} else {
+						// printf("%c\n", a[9] );
+						// printf("%d\n", k);
+						for (int z = 0; z < k ; z++) {
+							if (a[k - 4 - z] == 'X')
+								break;
+							count += int(a[k - 1 - z] - '0') * pow(10, z);
+							// printf("%d\n", count );
+						}
+						set(num, count, a[4]);
+					}
+				}
+			} else {
+				adds(num, a[4], a[9]);
+			}
+		}
+		printf("%d %d %d %d\n", num[0], num[1], num[2], num[3] );
+	}
+	system("pause");
+	return 0;
+}

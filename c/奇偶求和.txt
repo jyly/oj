@@ -1,0 +1,39 @@
+/*给定N个数，分别求出这N个数中奇数的和以及偶数的和。
+输入格式
+第一行为测试数据的组数T（1<=T<=50）。请注意，任意两组测试数据之间是相互独立的。
+每组数据包含两行：
+第一行为一个整数N（1<=N<=10C）。
+第二行为N个正整数，整数之间用一个空格隔开，且每个整数的绝对值均大不于10^5。
+输出格式：
+每组数据输出两个数，即N个数中奇数之和和偶数之和，中间用空格隔开。
+输入样例
+2
+5
+1 2 3 4 5
+5
+1 1 1 1 1
+输出样例
+9 6
+5 0*/
+#include<stdlib.h>
+#include<stdio.h>
+int main() {
+	int n;
+	scanf("%d", &n);
+	for (int e = 0; e < n; e++) {
+		int m;
+		scanf("%d", &m);
+		int even = 0, odd = 0;
+		for (int r = 0; r < m; r++) {
+			int t;
+			scanf("%d", &t);
+			if (t % 2 == 0)
+				even += t;
+			else
+				odd += t;
+		}
+		printf("%d %d\n", odd, even );
+	}
+	system("pause");
+	return 0;
+}

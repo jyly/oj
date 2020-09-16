@@ -1,0 +1,48 @@
+/*请你计算出第X年Y月Z日是第X年的第几天。
+其中，1月1日是第一天，1月2日是第二天，以此类推。
+计算时请注意闰年的影响。对于非整百年，年数能整
+除4是闰年，否则不是闰年；对于整百年，年数能整除400
+是闰年，否则不是闰年。如1900年和1901年不是闰年，而2000年和2004年是闰年。*/
+#include<stdio.h>
+#include<stdlib.h>
+int main() {
+	int n;
+	scanf("%d", &n);
+	int a[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	int b[12] = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	for (int i = 0; i < n; i++) {
+		int y, m, d;
+		scanf("%d:%d:%d", &y, &m, &d);
+		if (y % 100 != 0) {
+			if (y % 4 != 0) {
+				int t = 0;
+				for (int j = 0; j < m - 1; j++)
+					t += a[j];
+				t += d;
+				printf("%d\n", t );
+			} else {
+				int t = 0;
+				for (int j = 0; j < m - 1; j++)
+					t += b[j];
+				t += d;
+				printf("%d\n", t );
+			}
+		} else {
+			if (y % 400 != 0) {
+				int t = 0;
+				for (int j = 0; j < m - 1; j++)
+					t += a[j];
+				t += d;
+				printf("%d\n", t );
+			} else {
+				int t = 0;
+				for (int j = 0; j < m - 1; j++)
+					t += b[j];
+				t += d;
+				printf("%d\n", t );
+			}
+		}
+	}
+	system("pause");
+	return 0;
+}

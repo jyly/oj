@@ -1,0 +1,44 @@
+/*求2-a+2-b，其中a和b均为正整数，结果请用最简分数表示。
+输入格式
+第一行为测试数据的组数T（1<=T<=400）。请注意，任意两组测试数据之间是相互独立的。
+每组测试数据一行，包含两个整数a和b（2<=a,b<=20）。
+输出格式
+对于每组测试数据，在一行内输出结果，分子和分母用“/”隔开。
+输入样例
+2
+2 4
+3 2
+输出样例
+5/16
+3/8*/
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<math.h>
+int main() {
+	int n;
+	scanf("%d", &n);
+	int *a ;
+	a = new int[n * 2];
+
+	for (int e = 0; e < n; e++) {
+		for (int i = 0; i < n * 2; i++) {
+			a[i] = 1;
+		}
+		scanf("%d %d", &a[2], &a[3]);
+		a[2] = pow(2, a[2]);
+		a[3] = pow(2, a[3]);
+
+		if (a[3] > a[2]) {
+			a[0] = a[3] / a[2];
+			printf("%d/%d\n", a[0] + a[1] , a[3] );
+		}
+		else {
+			a[1] = a[2] / a[3];
+			printf("%d/%d\n", a[0] + a[1], a[2] );
+
+		}
+	}
+	system("pause");
+	return 0;
+}

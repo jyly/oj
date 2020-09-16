@@ -1,0 +1,38 @@
+/*输入数组长度 n 输入数组      a[1...n] 输入查找个数m 输入查找数字b[1...m]   输出 YES or NO  查找有则YES 否则NO 。
+输入描述:
+
+输入有多组数据。
+每组输入n，然后输入n个整数，再输入m，然后再输入m个整数（1<=m,n<=100）。
+
+输出描述:
+
+如果在n个数组中输出YES否则输出NO。 */
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+	int i,j;
+	scanf("%d",&i);
+	int *a;
+	a=(int *)malloc(sizeof(int)*i);
+	int k=0;
+	for(;k<i;k++){
+		scanf("%d",&a[k]);
+	}
+	scanf("%d",&j);
+	int t;
+	while(j--){
+		scanf("%d",&t);
+		int flag=0;
+		for(k=0;k<i;k++){
+			if(t==a[k])
+				flag=1;
+		}
+		if(flag==1)
+			printf("YES\n");
+		else
+			printf("NO\n");
+	}
+	free(a);
+	system("pause");	
+}

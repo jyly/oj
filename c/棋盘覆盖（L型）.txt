@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include<math.h>  
+void initsqure(int x, int y,int n, int a, int b, int *p,int M);
+int title = 1;
+int main() {
+	int  n,a,b,temp;
+	//printf("请输入要方格的大小（1-5）");
+	//scanf("%d",n);
+	//if (n < 1 || n>5)
+	//	return 0;
+	//else
+	//	initsqure();
+	n = 2;
+	a = 1;
+	b = 1;
+	n = pow(2, n);
+	int *p = (int *)malloc(sizeof(int)*(int)pow(n,2));
+	a--; b--;
+	temp = b*n + a;
+	p[temp] = 0;
+
+	initsqure(0,0,n,a,b,p,n);
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			temp = i*n + j;
+			printf("%d      ",p[temp]);
+		}
+		printf("\n");
+	}
+	return 0;
+}
+void initsqure(int x,int y,int n,int a,int b,int *p,int M) {//x和y是矩阵的首位置，n是矩阵大小，a和b是特殊点的位置，p是矩阵
+	if (1 == n) return;
+	int s = n/2, t = title++;
+	int temp;
+	if (a < (x+s)&&b < (y+s)) {
+		initsqure(x,y,s, a,b,p,M);
+	}	else {
+		temp = (s - 1+y)*M + s - 1+x;
+		p[temp] = t;
+		initsqure(x,y,s, (s - 1+x), (s - 1+y), p,M);
+	}
+
+
+
+	if (a < (x+s)&&b >= (y+s)) {
+		initsqure(x,(y+s),s, a, b, p,M);
+	}
+	else {
+		temp = (s+y) *M + s - 1+x;
+		p[temp] = t;
+		initsqure(x,(y+s),s, (s - 1 + x), (s + y), p,M);
+	}
+
+	if (a >=(x+ s)&&b < (y+s)) {
+		initsqure((x+s),y,s, a, b, p,M);
+	}
+	else {
+		temp = (s - 1+y)*M + s +x;
+		p[temp] = t;
+		initsqure((x+s),y,s, s+x, (s - 1 + y), p,M);
+	}
+
+	if (a >= (x + s) && b >= (y + s)) {
+		initsqure((x + s), (y + s), s, a, b, p, M);
+	}
+	else {
+		temp = ((y + s)) *M + (s + x);
+		p[temp] = t;
+		initsqure((x + s), (y + s), s, (x + s), (y + s), p, M);
+	}
+}

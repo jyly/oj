@@ -1,0 +1,25 @@
+/*注意读完整型后的字符串，要加\n，不然字符串首位会把上位的\n读进去*/
+#include<stdlib.h>
+#include<stdio.h>
+
+int main() {
+	int n;
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++) {
+		int m;
+		scanf("%d\n", &m);
+		char *a;
+		a = (char *)malloc(sizeof(char) * (2 * m ));
+		for (int j = 0; j < (m * 2 ) ; j++) {
+			scanf("%c", &a[j]);
+		}
+		if (m % 2 == 0) {
+			printf("%g\n", float(a[m / 2 + 2] + a[m / 2] - '0' * 2) / 2 );
+		} else {
+			printf("%g\n", (a[m / 2 + 2] - '0' ) );
+		}
+		free(a);
+	}
+	system("pause");
+	return 0;
+}

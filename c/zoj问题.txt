@@ -1,0 +1,62 @@
+/*
+一.题目描述：
+对给定的字符串(只包含'z','o','j'三种字符),判断他是否能AC。
+
+ 是否AC的规则如下：
+1. zoj能AC；
+2. 若字符串形式为xzojx，则也能AC，其中x可以是N个'o' 或者为空；
+3. 若azbjc 能AC，则azbojac也能AC，其中a,b,c为N个'o'或者为空；
+*/
+#include <stdio.h>
+#include<iostream>
+#include <stdlib.h>
+#include<string>
+#include<math.h>
+using namespace std;
+int main() {
+	string str;
+	while (cin >> str && !(str.empty())) {
+		int a = 0, b = 0, c = 0, i = 0;
+		while (str[i] == 'o') {
+			a++;
+			i++;
+		}
+		if (str[i] != 'z')
+		{
+			printf("Wrong Answer\n"); continue;
+		}
+		i++;
+		while (str[i] == 'o') {
+			b++;
+			i++;
+		}
+		if (str[i] != 'j')
+		{
+			printf("Wrong Answer\n"); continue;
+		}
+		i++;
+		while (str[i] == 'o') {
+			c++;
+			i++;
+		}
+		if (str[i])
+		{
+			printf("Wrong Answer\n"); continue;
+		}
+		if (1 == b && a == c)
+		{
+			printf("Accepted\n");
+		}
+		else {
+			while (1 < b&&c >= a) {
+				b--;
+				c = c - a;
+			}
+			if (1 == b &&c == a)
+				printf("Accepted\n");
+			else
+				printf("Wrong Answer\n");
+		}
+	}
+	return 0;
+}

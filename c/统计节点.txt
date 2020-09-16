@@ -1,0 +1,143 @@
+/*给出一棵有向树，一共有N   (1<N≤1000   )个节点，如果
+一个节点的度（入度+出度）不小于它所有儿子以及它父亲
+的度(如果存在父亲或儿子)，那么我们称这个节点为p节点，
+现在你的任务是统计p节点的个数。*/
+
+case #1
+
+#include<stdlib.h>
+#include<stdio.h>
+#include<vector>
+struct node {
+	int ori = -1;
+	int num = 0;
+	int side = 0;
+	std::vector<node *>next ;
+};
+node * sel(node *q, int a) {
+	if (q->num == a)
+		return q;
+	else {
+		int max = q->next.size();
+		node *p;
+		for (int j = 0; j < max; j++) {
+			p = sel(q->next[j], a);
+			if (p->num == a)
+				return p;
+		}
+		return NULL;
+	}
+}
+int check(node *p, int a) {
+	int flag = 0;
+	int max = p->next.size();
+	if (max == 0)
+		return 0;
+	else {
+		for (int i = 0; i < max; i++) {
+			if (p->side < p->next[i]->side || p->side < a)
+				flag = 1;
+		}
+		int t = 0;
+		for (int i = 0; i < max; i++) {
+			t += check(p->next[i], p->side) ;
+		}
+		if (flag == 0) {
+			return t + 1;
+		} else {
+			return t;
+		}
+	}
+}
+
+int main() {
+	int n;
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++) {
+		int m;
+		scanf("%d", &m);
+		node *p;
+		p = (node *)malloc(sizeof(node));
+		for (int j = 1; j < m ; j++) {
+			int a, b;
+			scanf("%d %d", &a, &b);
+			node *q;
+			q = sel(p, a);
+			q->side++;
+			node  *t;
+			t = (node *)malloc(sizeof(node));
+			t->num = b;
+			t -> ori = a;
+			t->side++;
+			q->next.push_back(t);
+		}
+		int count = 0;
+
+		count = check(p, 0);
+		printf("%d\n", count );
+	}
+	system("pause");
+	return 0;
+}
+
+
+case #2
+
+struct node {
+	int ori;
+	int side;
+	std::vector<int>num ;
+};
+node p[50];
+int main() {
+	int n;
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++) {
+		int m;
+		scanf("%d", &m);
+
+		for (int j = 0; j < m ; j++) {
+			p[j].side = 0;
+			p[j].ori = -1;
+		}
+		for (int j = 1; j < m ; j++) {
+			int a, b;
+			scanf("%d %d", &a, &b);
+			p[a].side++;
+			p[a].num.push_back(b);
+			p[b].side++;
+			p[b].ori = a;
+		}
+		for (int j = 0; j < m ; j++) {
+			// printf("%d  %d\n", p[j].ori, p[j].side);
+		}
+		// printf("\n");
+		int count = 0;
+		for (int j = 0; j < m; j++) {
+			if (j == 0) {
+				int flag = 0;
+				for (auto k : p[j].num)
+					if (p[j].side < p[k].side  )
+						flag = 1;
+				if (flag == 0)
+					count++;
+				// printf("%d  %d\n", count, j);
+			}
+			else {
+				if (p[j].side > p[p[j].ori].side || p[j].side == p[p[j].ori].side) {
+					int flag = 0;
+					for (auto k : p[j].num)
+						if (p[j].side < p[k].side  )
+							flag = 1;
+					if (flag == 0)
+						count++;
+					// printf("%d  %d\n", count, j);
+				}
+				// printf("%d  %d\n", count, j);
+			}
+		}
+		printf("%d\n", count );
+	}
+	system("pause");
+	return 0;
+}

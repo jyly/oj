@@ -1,0 +1,47 @@
+/*第一行输入一个数n，1 <= n <= 1000，下面输入n行数据，每一行有两个数，
+分别是x y。输出一组x y，该组数据是所有数据中x最小，且在x相等的情况下y最小的。 */
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+	int i;
+	scanf("%d",&i);
+	int a[2],b[2];
+	b[0]=0x7fffffff,b[1]=0x7fffffff;
+	int k=0;
+	for(;k<i;k++){
+		scanf("%d %d",&a[0],&a[1]);		
+		if(a[0]<b[0]||((a[0]==b[0])&&(a[1]<b[1]))){
+			b[0]=a[0];
+			b[1]=a[1];
+		}
+	}	
+
+	printf("%d %d",b[0],b[1]);
+	system("pause");	
+}
+
+ /*int main(){
+	int i;
+	scanf("%d",&i);
+	int *a;
+	a=(int *)malloc(sizeof(int)*i*2);
+	int k=0;
+	for(;k<i;k++){
+		scanf("%d %d",&a[k],&a[k*2]);		
+	}	
+	k=1;
+	int flag=0;
+	for(;k<i;k++){
+		if(a[k]<a[flag]){
+			flag=k;
+		}else{
+			if(a[k]==a[flag])
+				if(a[k*2]<a[flag*2])
+					flag=k;
+		}
+	}
+	printf("%d %d",a[flag],a[flag*2]);
+	system("pause");	
+} 
+*/

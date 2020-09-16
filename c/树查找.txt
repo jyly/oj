@@ -1,0 +1,32 @@
+/*有一棵树，输出某一深度的所有节点，有
+则输出这些节点，无则输出EMPTY。该树是完全二叉树。*/
+#include<stdio.h>
+#include<stdlib.h>
+#include<algorithm>
+#include<math.h>
+int main(){
+	int a;
+	scanf("%d",&a);
+	int *b=new int[a+1];
+	for(int i=0;i<a;i++)
+		scanf("%d",&b[i]);
+	b[a]=0;
+	int c;
+	scanf("%d",&c);
+	int i=pow(2,c-1),j=pow(2,c);
+	if(b[i-1]!=0){
+		for(;i<j;i++)
+			if(b[i-1]!=0&&(i==(j-1)||b[i]==0)){
+				printf("%d",b[i-1]);
+				break;
+			}
+			else
+				printf("%d ",b[i-1]);
+	}else{
+		printf("EMPTY");
+	}
+
+	delete []b;
+	system("pause");
+	return 0;
+}

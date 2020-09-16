@@ -1,0 +1,71 @@
+/*给定一个由小写字母a到z组成的字符串S，其中第i个字符为S[i]（下标从0开始）。你需要完成下面两个操作：
+
+INSERT c
+
+其中c是一个待输入的字符。你需要在字符串的末尾添加这个字符。保证输入的字符同样是a到z之间的一个小写字母。
+
+
+QUERY x
+
+其中x是一个输入的整数下标。对于这个询问，你需要回答在S当中和S[x]相等且与x最近的距离。输入保证x在当前字符串中合法。*/
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+int main() {
+	int n;
+	scanf("%d", &n);
+	for (int i = 0; i < n; i++) {
+		char a[10000];
+		scanf("%s", a);
+		int len;
+		len = strlen(a);
+		int m;
+		scanf("%d", &m);
+		for (int j = 0; j < m; j++) {
+			char ord[8], b;
+			scanf("%s %c", ord, &b);
+			if (ord[0] == 'I') {
+				a[len] = b, len++, a[len] = '\0';
+			}
+			if (ord[0] == 'Q') {
+				int d = b - '0';
+				int k = 1, flag = 0;
+				for ( ; d + k < len && d - k > -1; k++) {
+					if (a[d + k] == a[d]) {
+						flag = 1;
+						printf("%d\n", k );
+						break;
+					}
+					if (a[d - k] == a[d]) {
+						flag = 1;
+						printf("%d\n", k );
+						break;
+					}
+				}
+				if (d + k < len && flag != 1)
+					while (d + k < len) {
+						if (a[d + k] == a[d]) {
+							flag = 1;
+							printf("%d\n", k );
+							break;
+						}
+						k++;
+					}
+				if (d - k > -1 &&  flag != 1)
+					while (d - k > -1) {
+						if (a[d - k] == a[d]) {
+							flag = 1;
+							printf("%d\n", k );
+							break;
+						}
+						k++;
+					}
+
+				if (flag == 0)
+					printf("-1\n");
+			}
+		}
+	}
+	system("pause");
+	return 0;
+}

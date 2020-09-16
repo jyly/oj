@@ -1,0 +1,45 @@
+/* 输入一个N（N<=10）阶方阵，按照如下方式调整方阵： 1.将第一列中最大数所在的行与第一行对调。 2.将第二列中从第二行到第N行最大数所在的行与第二行对调。 依此类推... N-1.将第N-1列中从第N-1行到第N行最大数所在的行与第N-1行对调。 N.输出这个方阵
+输入描述:
+
+包含多组测试数据,每组测试数据第一行为一个整数N,表示方阵的阶数.
+接下来输入这个N阶方阵.
+
+输出描述:
+
+调整后的方阵*/
+#include <stdio.h>
+#include <stdlib.h>
+int main(){
+	int n;
+	scanf("%d",&n);
+	int i,k,j,t;
+	i=n*n;
+	int *a;
+	a=(int *)malloc(sizeof(int)*i);
+	for(k=0;k<i;k++){
+		scanf("%d",&a[k]);
+	}	
+	for(k=0;k<n;k++){
+		for(j=k,t=j;j<n;j++){
+			if(a[k+n*j]>a[k+n*t])
+				t=j;
+		}
+		for(i=0;i<n;i++){
+			j=a[k*n+i];
+			a[k*n+i]=a[t*n+i];
+			a[t*n+i]=j;
+		}
+	}
+	for(i=0;i<n;i++){
+		for(j=0;j<n;j++){
+			if(j==(n-1))
+				printf("%d\n",a[i*n+j]);
+			else
+				printf("%d ",a[i*n+j]);
+		}
+		
+	}
+	free(a);
+	system("pause");
+	return 0;
+}

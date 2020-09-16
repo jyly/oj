@@ -1,0 +1,67 @@
+/*题目描述
+    读入一组字符串（待操作的），再读入一个int n记录记下来有几条命令，总共有2中命令：1、翻转  从下标为i的字符开始到i+len-1之间的字符串倒序；2、替换  命中如果第一位为1，用命令的第四位开始到最后的字符串替换原读入的字符串下标 i 到 i+len-1的字符串。每次执行一条命令后新的字符串代替旧的字符串（即下一条命令在作用在得到的新字符串上）。     命令格式：第一位0代表翻转，1代表替换；第二位代表待操作的字符串的起始下标int i；第三位表示需要操作的字符串长度int len。*/
+#include<stdio.h>
+#include<stdlib.h>
+#include<algorithm>
+int main(){
+	char a[100],b[100];
+	scanf("%s",a);
+	int c;
+	scanf("%d",&c);
+	for(int i=0;i<c;i++){
+		scanf("%s",b);
+		if('0'==b[0]){
+			for(int i=(b[1]-48),j=i+(b[2]-49);i<((i+j)/2+1);i++,j--){
+				int t;
+				t=a[i],a[i]=a[j],a[j]=t;
+			}
+		}else{
+			int e[100],i=(b[1]-48),j=i+(b[2]-48),k=3;;
+			for(int l=0;l<100;l++)
+				e[l]=a[l];
+			for(;b[k]!=0;i++){
+				a[i]=b[k++];
+			}
+			for(;e[j]!=0;j++)
+				a[i++]=e[j];
+			a[i]='\0';
+		}
+		printf("%s\n",a);
+	}
+
+	system("pause");
+	return 0;
+}
+// #include<stdio.h>
+// #include<stdlib.h>
+// #include<algorithm>
+// int main(){
+// 	char a[100],b[100];
+// 	scanf("%s",a);
+// 	int c;
+// 	scanf("%d",&c);
+// 	char *d=new char[c*100];
+// 	for(int i=0;i<c;i++){
+// 		scanf("%s",b);
+// 		if('0'==b[0]){
+// 			for(int i=(b[1]-48),j=i+(b[2]-49);i<((i+j)/2+1);i++,j--){
+// 				int t;
+// 				t=a[i],a[i]=a[j],a[j]=t;
+// 			}
+// 		}else{
+// 			for(int i=(b[1]-48),j=i+(b[2]-48),k=3;i<j;i++){
+// 				a[i]=b[k++];
+// 			}
+// 		}
+// 		for(int j=0;j<100&&a[j]!=0;j++)
+// 			d[i*100+j]=a[j];
+// 	}
+// 	for(int i=0;i<c;i++){
+// 		for(int j=0;j<100&&a[j]!=0;j++)
+// 			printf("%c",d[i*100+j]);
+// 		printf("\n");
+// 		}
+// 	delete []d;
+// 	system("pause");
+// 	return 0;
+// }
